@@ -4,7 +4,7 @@
 
 ### AI/ML Engineer — Backend, Applied ML & RAG Systems
 
-I build production-style ML and LLM systems end to end: model / retrieval pipeline → API → the interface people actually use.
+I design, build, and ship ML and LLM systems end to end: model / retrieval pipeline → authenticated API → deployed interface.
 
 [![SentinelAI](https://img.shields.io/badge/Live%20Demo-SentinelAI-3E63DD?style=for-the-badge)](https://sentinel-ai-six-nu.vercel.app)
 [![RepoMind](https://img.shields.io/badge/RAG%20Project-RepoMind-6E56CF?style=for-the-badge)](https://github.com/pransh966/RepoMind)
@@ -17,12 +17,13 @@ I build production-style ML and LLM systems end to end: model / retrieval pipeli
 
 ### About me
 
-AI/ML undergraduate (B.Tech, GGSIPU, 2023–2027) who likes finishing what I start — that means the model actually gets served behind an API, and the API actually gets a real interface, not just a notebook and a metric. I currently build two full production-style systems: **SentinelAI**, a fraud detection platform with live SHAP explainability, and **RepoMind**, a retrieval-augmented (RAG) assistant that answers questions about a codebase with citations back to the exact file and line. Comfortable across the stack: Python, FastAPI, PostgreSQL, React, and the retrieval/embedding layer that sits under most real LLM products.
+I build ML and LLM products that ship as complete systems, not notebooks: the model is served behind a typed API, the API sits behind auth and a database, and there is a deployed interface on top. Two of those are live in my portfolio: **SentinelAI**, a fraud detection platform with real-time scoring and per-prediction SHAP explainability, and **RepoMind**, a retrieval-augmented (RAG) assistant that answers questions about a codebase with citations to the exact file and line range. Day to day I work across Python, FastAPI, PostgreSQL, React, and the retrieval/embedding layer underneath most LLM products.
 
-- 🔭 Currently building: **RepoMind** — AST-aware RAG over codebases, and **SentinelAI** — real-time + batch fraud detection
-- 🌱 Currently deepening: production ML system design, retrieval architecture, and model monitoring
-- 💬 Ask me about: LightGBM/scikit-learn pipelines, SHAP explainability, FastAPI backends, FAISS retrieval, RAG system design
-- ⚡ Fun fact: ranked Top 10 of 100+ teams in a 24-hour hackathon
+- 🔭 **Building:** RepoMind (AST-aware RAG over codebases) and SentinelAI (real-time + batch fraud detection)
+- 🎯 **Focus areas:** ML system design, retrieval architecture, model monitoring
+- 💬 **Ask me about:** LightGBM/scikit-learn pipelines, SHAP explainability, FastAPI backends, FAISS retrieval, RAG system design
+- 🏆 **Recognition:** Top 10 of 100+ teams in a 24-hour hackathon
+- 🎓 **Education:** B.Tech (AI/ML), GGSIPU
 
 ---
 
@@ -30,11 +31,11 @@ AI/ML undergraduate (B.Tech, GGSIPU, 2023–2027) who likes finishing what I sta
 
 **AI-powered fraud detection platform** — real-time transaction scoring, batch analysis, and per-prediction explainability. Trained on the IEEE-CIS Fraud Detection dataset (~590K transactions, 424 engineered features), served through FastAPI, with a React dashboard for scoring, batch analysis, and history.
 
-**What makes it more than a tutorial project:**
+**Engineering highlights:**
 - Live decision threshold slider (0.10–0.90) with Aggressive/Balanced/Conservative presets — see precision/recall trade-offs instantly, no retraining
 - Per-transaction **SHAP explainability**, row-aware for batch uploads, plus an aggregate "what's driving fraud risk" view
 - Searchable, filterable, sortable batch results table with per-row SHAP inspection
-- Honest metrics — precision/recall surfaced explicitly, not a misleading accuracy number, since the data is ~3.5% fraud
+- Metrics chosen for the problem — precision/recall surfaced explicitly instead of accuracy, since the data is ~3.5% fraud
 - Live-updating dashboard: trend, probability distribution, risk breakdown, threshold impact simulator
 
 <table>
@@ -45,9 +46,9 @@ AI/ML undergraduate (B.Tech, GGSIPU, 2023–2027) who likes finishing what I sta
 </table>
 
 **Stack:** LightGBM · scikit-learn · SHAP · FastAPI · PostgreSQL (Neon) · React 19 · Tailwind · Recharts
-**Deployed on:** Vercel (frontend) + Render (backend)
+**Deployed on:** Vercel (frontend) + Render (backend), PostgreSQL on Neon
 
-🔗 **[Live demo](https://sentinel-ai-six-nu.vercel.app)** — free, no setup, register and try it
+🔗 **[Live demo](https://sentinel-ai-six-nu.vercel.app)** — register and try it, no setup
 📄 **[API docs](https://sentinel-ai5.onrender.com/docs)**
 
 ---
@@ -62,19 +63,19 @@ repo files --> AST-aware chunking --> local embeddings --> FAISS index
 user question --> embed --> retrieve top-k --> LLM (grounded prompt) --> answer + citations
 ```
 
-**What makes it more than a "chat with your docs" tutorial:**
-- **AST-aware chunking, not fixed-size windows.** Most RAG tutorials split text every N characters, routinely cutting a function in half mid-body. RepoMind parses Python with the `ast` module and chunks at function/class boundaries, so retrieval returns whole, coherent units of code — non-Python files fall back to a structure-aware sliding window instead of a blind character count.
-- **Grounded answers, not just retrieval.** The system prompt explicitly instructs the model to answer only from retrieved context and say so when it can't — an actual mechanism to reduce hallucination, not just a claim.
+**Design decisions:**
+- **AST-aware chunking, not fixed-size windows.** Fixed-size splitting routinely cuts a function in half mid-body and hurts retrieval quality. RepoMind parses Python with the `ast` module and chunks at function/class boundaries, so retrieval returns whole, coherent units of code — non-Python files fall back to a structure-aware sliding window rather than a fixed character count.
+- **Grounded answers, not just retrieval.** The system prompt explicitly instructs the model to answer only from retrieved context and say so when it can't — a concrete guardrail against hallucination.
 - **Local embeddings, pluggable generation.** Embedding runs locally via `sentence-transformers` — free, fast, works offline. Only the final answer-generation call needs a paid API key, and that provider is swappable (OpenAI / Anthropic / a zero-key mock for local dev and tests).
-- **Full accounts system**, not a single-user script — JWT auth, per-user repos and query history in PostgreSQL, connect a repo by git URL or `.zip` upload, each repo gets its own FAISS index.
-- **A real (if simple) rate limiter**, and a documented, honest list of what would need to change to scale it (swap `IndexFlatIP` for `IndexHNSWFlat`, move state out of process, add streaming) — written up in the repo rather than glossed over.
+- **Multi-user by design** — JWT auth, per-user repos and query history in PostgreSQL, connect a repo by git URL or `.zip` upload, each repo gets its own FAISS index.
+- **Rate limiting and a documented scaling path** — the repo spells out what changes at higher load: swap `IndexFlatIP` for `IndexHNSWFlat`, move state out of process, add streaming.
 
-**Measured, not invented:** I benchmarked the ingestion pipeline against a real open-source repo (`psf/requests`) rather than making up numbers — 37 files scanned into 254 AST-aware chunks in ~62ms on a single process, no GPU.
+**Benchmarked:** ingestion pipeline run against a real open-source repo (`psf/requests`) — 37 files scanned into 254 AST-aware chunks in ~62ms on a single process, no GPU.
 
 **Stack:** Python · FastAPI · FAISS · sentence-transformers · PostgreSQL · JWT · OpenAI/Anthropic-pluggable LLM layer · Docker
-**Status:** repo is public and fully documented; the hosted demo is temporarily down while I move the embedding model out of the deploy image — the free-tier container limit is 512MB and the current image (embedding model + FAISS + deps) goes over that. Swapping to a smaller quantized model / lazy-loading the model at first request instead of at build time.
+**Status:** source is public and fully documented. The hosted demo is being redeployed: I'm moving the embedding model out of the build image (smaller quantized model, lazy-loaded on first request) to fit the 512MB container limit.
 
-🔗 **[Source & full README](https://github.com/pransh966/RepoMind)** — setup, API reference, architecture notes, and honest limitations are all documented there
+🔗 **[Source & full README](https://github.com/pransh966/RepoMind)** — setup, API reference, architecture notes, and known limitations
 
 ---
 
@@ -127,7 +128,7 @@ user question --> embed --> retrieve top-k --> LLM (grounded prompt) --> answer 
 ### 📌 More projects
 
 **Cinematch — Movie Recommendation System** — `Python · FastAPI · FAISS · Vanilla JS`
-Embedding-based recommendation engine across 100,000+ ratings, 1,600+ movies, and 900+ users, using FAISS for approximate nearest-neighbor retrieval (0.71 avg top-1 / 0.64 avg top-5 cosine similarity on held-out queries). Rebuilt from an original Streamlit notebook app into a real FastAPI service + framework-free JS frontend: the TMDB key moved server-side out of source control, recommendation logic separated from presentation, an in-process response cache added, and a `/health` endpoint that reports real service status instead of failing silently.
+Embedding-based recommendation engine across 100,000+ ratings, 1,600+ movies, and 900+ users, using FAISS for approximate nearest-neighbor retrieval (0.71 avg top-1 / 0.64 avg top-5 cosine similarity on held-out queries). Productionized from a Streamlit prototype into a FastAPI service with a framework-free JS frontend: API keys kept server-side and out of source control, recommendation logic separated from presentation, an in-process response cache, and a `/health` endpoint that reports real service status.
 
 **Social Media REST API** — `FastAPI · PostgreSQL · SQLAlchemy · JWT`
 RESTful backend with JWT authentication, post management, and voting. Secure password hashing, Pydantic request validation, PostgreSQL schemas via SQLAlchemy ORM, interactive docs via Swagger UI and ReDoc.

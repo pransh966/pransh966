@@ -2,9 +2,9 @@
 
 # Hi, I'm Pranshul Khokhar 👋
 
-### AI/ML Engineer — Backend, Applied ML & RAG Systems
+### AI/ML & Full-Stack Engineer — Applied ML, RAG Systems & Web Applications
 
-I design, build, and ship ML and LLM systems end to end: model / retrieval pipeline → authenticated API → deployed interface.
+I design, build, and ship ML, LLM, and full-stack web systems end to end: data / model pipeline → authenticated API → deployed interface.
 
 [![SentinelAI](https://img.shields.io/badge/Live%20Demo-SentinelAI-3E63DD?style=for-the-badge)](https://sentinel-ai-six-nu.vercel.app)
 [![RepoMind](https://img.shields.io/badge/RAG%20Project-RepoMind-6E56CF?style=for-the-badge)](https://github.com/pransh966/RepoMind)
@@ -17,11 +17,11 @@ I design, build, and ship ML and LLM systems end to end: model / retrieval pipel
 
 ### About me
 
-I build ML and LLM products that ship as complete systems, not notebooks: the model is served behind a typed API, the API sits behind auth and a database, and there is a deployed interface on top. Two of those are live in my portfolio: **SentinelAI**, a fraud detection platform with real-time scoring and per-prediction SHAP explainability, and **RepoMind**, a retrieval-augmented (RAG) assistant that answers questions about a codebase with citations to the exact file and line range. Day to day I work across Python, FastAPI, PostgreSQL, React, and the retrieval/embedding layer underneath most LLM products.
+I build ML and LLM products that ship as complete systems, not notebooks: the model is served behind a typed API, the API sits behind auth and a database, and there is a deployed interface on top. Two of those are live in my portfolio: **SentinelAI**, a fraud detection platform with real-time scoring and per-prediction SHAP explainability, and **RepoMind**, a retrieval-augmented (RAG) assistant that answers questions about a codebase with citations to the exact file and line range. Beyond ML, I build full-stack web applications for real products and brands (**Cheerish Nutrition**, **GoCrew**). Day to day I work across Python, FastAPI, PostgreSQL, React, and the retrieval/embedding layer underneath most LLM products.
 
-- 🔭 **Building:** RepoMind (AST-aware RAG over codebases) and SentinelAI (real-time + batch fraud detection)
+- 🔭 **Building:** RepoMind (AST-aware RAG over codebases), SentinelAI (real-time + batch fraud detection), and GoCrew (group travel platform)
 - 🎯 **Focus areas:** ML system design, retrieval architecture, model monitoring
-- 💬 **Ask me about:** LightGBM/scikit-learn pipelines, SHAP explainability, FastAPI backends, FAISS retrieval, RAG system design
+- 💬 **Ask me about:** LightGBM/scikit-learn pipelines, SHAP explainability, FastAPI backends, FAISS retrieval, RAG system design, full-stack web development
 - 🏆 **Recognition:** Top 10 of 100+ teams in a 24-hour hackathon
 - 🎓 **Education:** B.Tech (AI/ML), GGSIPU
 
@@ -105,6 +105,12 @@ user question --> embed --> retrieve top-k --> LLM (grounded prompt) --> answer 
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=flat-square)
 ![Seaborn](https://img.shields.io/badge/Seaborn-3776AB?style=flat-square)
 
+**Full-stack web development**
+![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Tailwind](https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![REST APIs](https://img.shields.io/badge/REST%20APIs-009688?style=flat-square)
+![Responsive UI](https://img.shields.io/badge/Responsive%20UI-6E56CF?style=flat-square)
+
 **Backend**
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
@@ -122,6 +128,29 @@ user question --> embed --> retrieve top-k --> LLM (grounded prompt) --> answer 
 ![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 ![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
+
+---
+
+### 🌐 Full-stack web development
+
+#### 🧭 GoCrew — group travel platform *(in development)*
+
+**Curated group trips for people who want to travel but don't have the right people to go with.** Travelers join a trip and travel as a "crew" led by a trip captain; GoCrew runs a small set of vetted operators instead of an open marketplace, so quality and safety stay controlled.
+
+**Product design:**
+- Three roles with role-based access: **Traveler** (browse, book, join the crew, review), **Captain** (trip manifest, incident log), **Admin** (trips, operators, costs, refunds, reports)
+- **Minimum-group-size logic** — a trip confirms automatically once the minimum is reached, otherwise it is cancelled and everyone is refunded
+- **Oversell-safe booking** and **Razorpay payments** with verified webhooks and refunds
+- Per-trip profit & loss and operator payables for the admin
+- Launch scope: weekend treks and road trips from Delhi NCR
+
+**Architecture:** modular monolith (Router → Schema → Service → Repository per module) with an event bus and idempotency checks on payments, designed so it can scale without a rewrite.
+
+**Stack:** FastAPI · PostgreSQL · SQLAlchemy · Alembic · Redis · Razorpay · Cloudinary · Docker · GitHub Actions
+
+#### 🥗 Cheerish Nutrition — nutrition brand website
+
+Full-stack web application, live at **[cheerishnutrition.com](https://cheerishnutrition.com)**.
 
 ---
 
